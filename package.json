@@ -1,0 +1,30 @@
+{
+  "name": "heralda-chat-bot",
+  "version": "0.0.2",
+  "description": "A simple bot that heralds new arrivals to voice chat channels in Discord.",
+  "main": "index.js",
+  "scripts": {
+    "start": "forever start -l forever.log -e BOOSTOErrs.log -o BOOSTOOutput.log -a index.js",
+    "stop": "forever stop index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EbekFrostblade/BOOST-o-bot.git"
+  },
+  "keywords": [
+    "bot",
+    "discord"
+  ],
+  "author": "Brad \"breadjones\" Jones",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EbekFrostblade/Heralda-chat-bot/issues"
+  },
+  "homepage": "https://github.com/EbekFrostblade/BOOST-o-bot#readme",
+  "dependencies": {
+    "discordie": "github:qeled/discordie",
+    "forever": "^0.15.3",
+    "voice-rss-tts": "./lib/voice-rss-tts"
+  }
+}
