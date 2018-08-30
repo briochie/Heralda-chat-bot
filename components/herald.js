@@ -2,12 +2,12 @@ module.exports = Herald;
 
 const Discord = require('discord.js');
 const Responder = require("./responder.js");
-const TtsAnnouncer = require("./ttsAnnouncer/index.js");
+const Voice = require("./voice.js");
 
 function Herald(client) {
   this.responder = new Responder(client);
 
-  const ttsAnnouncer = new TtsAnnouncer(client);
+  const ttsAnnouncer = new Voice(client);
 
   this.responder.addListener({
     messages: ['get in here', 'you\'ve been summoned'],
