@@ -68,13 +68,13 @@ function Herald(client) {
     }
   }
 
-  function announceUserArrival(guildUser, voiceChannel) {
-      const message = guildUser.nickname + " has connected.";
+  function announceUserArrival(guildMember, voiceChannel) {
+      const message = (guildMember.nickname || guildMember.user.username) + " has connected.";
       ttsAnnouncer.announce(voiceChannel, message);
   }
 
-  function announceUserExit(guildUser, voiceChannel) {
-      const message = guildUser.nickname + " has left the channel.";
+  function announceUserExit(guildMember, voiceChannel) {
+      const message = (guildMember.nickname || guildMember.user.username) + " has left the channel.";
       ttsAnnouncer.announce(voiceChannel, message);
   }
 }
