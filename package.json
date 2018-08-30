@@ -23,8 +23,10 @@
   },
   "homepage": "https://github.com/EbekFrostblade/BOOST-o-bot#readme",
   "dependencies": {
-    "discordie": "github:qeled/discordie",
+    "discord.js": "^11.4.2",
+    "ffmpeg-binaries": "^4.0.0",
     "forever": "^0.15.3",
+    "node-opus": "^0.3",
     "voice-rss-tts": "./lib/voice-rss-tts"
   }
 }

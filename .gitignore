@@ -95,3 +95,6 @@ package-lock.json
 
 #generated mp3 audio
 tts/*.mp3
+
+#discord.js/opum files
+.vs

@@ -30,3 +30,7 @@ After getting these, create a file in the root directory called `_connectionConf
 ```
 
 After that, run `npm install` and `npm start`, and Heralda will be up and running. Invite her to your Discord server as you would any other bot.
+
+### Installing on Windows
+
+Since Discord.js prefers to use `node-opus`, you will need to install the windows build tools: https://github.com/felixrieseberg/windows-build-tools

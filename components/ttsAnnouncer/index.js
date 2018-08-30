@@ -12,22 +12,12 @@ function ttsAnnouncer(client) {
     this.client = client;
 }
 
-ttsAnnouncer.prototype.announce = function (message) {
+ttsAnnouncer.prototype.announce = function (voiceChannel, message) {
     const fileName = message.replace(/[.,\\\/#!$%\^&\*;:{}=\-_`~()?]/g,"").split(" ").join("_").toLowerCase() + ".mp3";
 
     readyAnnouncementFile(message, fileName, (err, filePath) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-
-        if (ttsQueue.length === 0) {
-            ttsQueue.push(filePath);
-            play(this.client);
-        }
-        else {
-            ttsQueue.push(filePath);
-        }
+        console.log('playing message: ' + message);
+        voiceChannel.connection.playFile(filePath);
     });
 }
 
@@ -35,24 +25,17 @@ ttsAnnouncer.prototype.clearQueue = function() {
     ttsQueue = [];
 }
 
-function play(client) {
-    const info = client.VoiceConnections[0];
+function play(voiceChannel) {
     const fileToPlay = ttsQueue[0];
 
     if (!fileToPlay) {
         return;
     }
 
-    var encoder = info.voiceConnection.createExternalEncoder({
-        type: "ffmpeg",
-        source: fileToPlay
-    });
-    encoder.play();
-
-    encoder.once("end", () => {
+    voiceChannel.connection.playFile(fileToPlay).on('end', () => {
         ttsQueue.splice(0, 1);
         if (ttsQueue.length >= 1) {
-            play(client);
+            play(voiceChannel);
         }
     });
 }
@@ -62,6 +45,7 @@ function writeNewSoundFile(filePath, content, callback) {
 }
 
 function callVoiceRssApi(message, filePath, callback) {
+    console.log("Making API call");
     tts.speech({
         key: connectionConfig.voiceApiKey,
         hl: 'en-gb',
