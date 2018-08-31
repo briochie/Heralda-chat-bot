@@ -4,46 +4,53 @@ const connectionConfig = require('../_connectionConfig.json');
 
 const ttsDirectory = "./tts";
 
-module.exports = Voice;
-
-function Voice(client) {
-    this.client = client;
-    this.audioQueue = new AudioQueue();
-}
-
-Voice.prototype.announce = function (voiceChannel, message) {
-    const fileName = message.replace(/[.,\\\/#!$%\^&\*;:{}=\-_`~()?]/g,"").split(" ").join("_").toLowerCase() + ".mp3";
-
-    readyAnnouncementFile(message, fileName, (err, filePath) => {
-        console.log('playing message: ' + message);
-        this.audioQueue.queueAudioForChannel(filePath, voiceChannel);
-    });
-}
-
-function AudioQueue() {
-    this.voiceChannelAudioQueues = {};
-};
-
-AudioQueue.prototype.queueAudioForChannel = function(filePath, voiceChannel) {
-    if (!this.voiceChannelAudioQueues[voiceChannel.id]) {
-        this.voiceChannelAudioQueues[voiceChannel.id] = [];
+class VoiceQueue {
+    constructor() {
+        this.voiceChannelAudioQueues = {};
     }
 
-    this.voiceChannelAudioQueues[voiceChannel.id].push(filePath);
-    this.playNextForVoiceChannel(voiceChannel);
-};
+    queueAudioForChannel(filePath, voiceChannel) {
+        if (!this.voiceChannelAudioQueues[voiceChannel.id]) {
+            this.voiceChannelAudioQueues[voiceChannel.id] = [];
+        }
 
-AudioQueue.prototype.playNextForVoiceChannel = function(voiceChannel) {
-    if (this.voiceChannelAudioQueues[voiceChannel.id].length <= 0 || voiceChannel.connection.speaking) {
-        return;
-    }
-
-    let audio = this.voiceChannelAudioQueues[voiceChannel.id];
-    voiceChannel.connection.playFile(audio).on('end', () => {
-        this.voiceChannelAudioQueues[voiceChannel.id].splice(0, 1);
+        this.voiceChannelAudioQueues[voiceChannel.id].push(filePath);
         this.playNextForVoiceChannel(voiceChannel);
-    });
-};
+    }
+
+    playNextForVoiceChannel(voiceChannel) {
+        if (this.voiceChannelAudioQueues[voiceChannel.id].length <= 0 || voiceChannel.connection.speaking) {
+            return;
+        }
+
+        let audio = this.voiceChannelAudioQueues[voiceChannel.id][0];
+        console.log('playing audio: ' + audio);
+        voiceChannel.connection.playFile(audio).on('end', () => {
+            this.voiceChannelAudioQueues[voiceChannel.id].splice(0, 1);
+            this.playNextForVoiceChannel(voiceChannel);
+        });
+    }
+}
+
+class Voice {
+    constructor(client) {
+        this.client = client;
+        this.voiceQueue = new VoiceQueue();
+    }
+
+    announce(voiceChannel, message) {
+        const fileName = message.replace(/[.,\\\/#!$%\^&\*;:{}=\-_`~()?]/g,"").split(" ").join("_").toLowerCase() + ".mp3";
+
+        readyAnnouncementFile(message, fileName, (err, filePath) => {
+            console.log('queueing message: ' + message);
+            this.voiceQueue.queueAudioForChannel(filePath, voiceChannel);
+        });
+    }
+}
+
+Voice.VoiceQueue = VoiceQueue;
+
+module.exports = Voice;
 
 function writeNewSoundFile(filePath, content, callback) {
     fs.mkdir(ttsDirectory, (err) => fs.writeFile(filePath, content, (err) => callback(err)));

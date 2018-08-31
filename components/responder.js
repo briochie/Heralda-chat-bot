@@ -1,34 +1,41 @@
-module.exports = Responder;
+class Responder {
+    constructor(client) {
+        this.listeners = [];
+        this.client = client;
 
-function Responder(client) {
-    this.listeners = [];
+        this._setUpMessageListenerOnClient();
+    }
 
-    client.on('message', message => {
-        if (client.user.id === message.author.id || !message.isMentioned(client.user)) {
-            return;
-        }
+    addListener(options) {
+        options.messages.forEach(message => {
+            this.listeners.push({
+                message: message.toLowerCase(),
+                privateAllowed: options.privateAllowed,
+                callback: options.callback
+            });
+        });
+    }
 
-        const messageContent = message.content.toLowerCase();
-        this.listeners.forEach(listener => {
-            if (!listener.privateAllowed && !message.guild) {
+    _setUpMessageListenerOnClient() {
+        this.client.on('message', message => {
+            if (this.client.user.id === message.author.id || !message.isMentioned(this.client.user)) {
                 return;
             }
 
-            if (messageContent.indexOf(listener.message) >= 0) {
-                console.log("Command Dispatched: ", listener.message)
-                console.log ("Issued at ", new Date(), "by", message.author.username);
-                listener.callback(message);
-            }
+            const messageContent = message.content.toLowerCase();
+            this.listeners.forEach(listener => {
+                if (!listener.privateAllowed && !message.guild) {
+                    return;
+                }
+
+                if (messageContent.indexOf(listener.message) >= 0) {
+                    console.log("Command Dispatched: ", listener.message)
+                    console.log ("Issued at ", new Date(), "by", message.author.username);
+                    listener.callback(message);
+                }
+            });
         });
-    });
+    }
 };
 
-Responder.prototype.addListener = function (options) {
-    options.messages.forEach(message => {
-        this.listeners.push({
-            message: message.toLowerCase(),
-            privateAllowed: options.privateAllowed,
-            callback: options.callback
-        });
-    });
-};
+module.exports = Responder;

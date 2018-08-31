@@ -1,66 +1,73 @@
-module.exports = Herald;
-
 const Discord = require('discord.js');
 const Responder = require("./responder.js");
 const Voice = require("./voice.js");
 
-function Herald(client) {
-  this.responder = new Responder(client);
+class Herald {
+  constructor(client) {
+    this.client = client;
+    this.responder = new Responder(client);
+    this.voice = new Voice(client);
 
-  const ttsAnnouncer = new Voice(client);
+    this._listenForSummons();
+    this._listenForVoiceStatusChanges();
+  }
 
-  this.responder.addListener({
-    messages: ['get in here', 'you\'ve been summoned'],
-    privateAllowed: true,
-    callback: summonedToChat
-  });
+  _listenForSummons() {
+    this.responder.addListener({
+      messages: ['get in here', 'you\'ve been summoned'],
+      privateAllowed: true,
+      callback: this._summonedToChat.bind(this)
+    });
 
-  this.responder.addListener({
-    messages: ['dismissed', 'get out of here'],
-    privateAllowed: false,
-    callback: leaveChat
-  });
+    this.responder.addListener({
+      messages: ['dismissed', 'get out of here'],
+      privateAllowed: false,
+      callback: this._leaveChat.bind(this)
+    });
+  }
 
-  client.on('voiceStateUpdate', (oldState, newState) => {
-      const guildConnection = client.voiceConnections.get(newState.guild.id);
+  _listenForVoiceStatusChanges() {
+    this.client.on('voiceStateUpdate', (oldState, newState) => {
+      const guildConnection = this.client.voiceConnections.get(newState.guild.id);
 
-      if (newState.user.id == client.user.id || !guildConnection) {
+      if (newState.user.id == this.client.user.id || !guildConnection) {
           return;
       }
 
       if (newState.voiceChannel && newState.voiceChannel.id === guildConnection.channel.id) {
-          announceUserArrival(newState, guildConnection.channel);
+          this._announceUserArrival(newState, guildConnection.channel);
       }
       else if (oldState.voiceChannel.id === guildConnection.channel.id) {
-          announceUserExit(oldState, guildConnection.channel);
+          this._announceUserExit(oldState, guildConnection.channel);
       }
-  });
+    });
+  }
 
-  function summonedToChat(message) {
-    if (!message.guild || message.author.id === client.user.id) {
-        return;
+  _summonedToChat(message) {
+    if (!message.guild || message.author.id === this.client.user.id) {
+      return;
     }
 
     const voiceChannel = message.member.voiceChannel;
 
     if (voiceChannel.connection && voiceChannel.connection.status === Discord.Constants.VoiceStatus.CONNECTED) {
-        message.reply("I'm already in your voice channel.");
-        return;
+      message.reply("I'm already in your voice channel.");
+      return;
     }
 
     voiceChannel.join().then((voiceInfo, err) => {
-        const message = "Heralda, as summoned.";
+      const message = "Heralda, as summoned.";
 
-        if (err) {
-            console.log(err);
-            return;
-        }
+      if (err) {
+        console.log(err);
+        return;
+      }
 
-        ttsAnnouncer.announce(voiceChannel, message);
+      this.voice.announce(voiceChannel, message);
     });
   }
 
-  function leaveChat(message) {
+  _leaveChat(message) {
     const voiceChannel = message.member.voiceChannel;
 
     if (voiceChannel.connection && voiceChannel.connection.status === Discord.Constants.VoiceStatus.CONNECTED) {
@@ -68,13 +75,15 @@ function Herald(client) {
     }
   }
 
-  function announceUserArrival(guildMember, voiceChannel) {
-      const message = (guildMember.nickname || guildMember.user.username) + " has connected.";
-      ttsAnnouncer.announce(voiceChannel, message);
+  _announceUserArrival(guildMember, voiceChannel) {
+    const message = (guildMember.nickname || guildMember.user.username) + " has connected.";
+    this.voice.announce(voiceChannel, message);
   }
 
-  function announceUserExit(guildMember, voiceChannel) {
-      const message = (guildMember.nickname || guildMember.user.username) + " has left the channel.";
-      ttsAnnouncer.announce(voiceChannel, message);
+  _announceUserExit(guildMember, voiceChannel) {
+    const message = (guildMember.nickname || guildMember.user.username) + " has left the channel.";
+    this.voice.announce(voiceChannel, message);
   }
 }
+
+module.exports = Herald;
