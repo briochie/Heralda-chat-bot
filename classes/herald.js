@@ -3,9 +3,8 @@ const HeraldaPlugin = require('./plugin.js');
 const Voice = require("./voice.js");
 
 class Herald extends HeraldaPlugin {
-  constructor(client) {
-    super(client);
-    this.voice = new Voice(client);
+  init(client) {
+    this.voice = new Voice();
 
     this._listenForSummons();
     this._listenForVoiceStatusChanges();
