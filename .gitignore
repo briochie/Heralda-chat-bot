@@ -85,7 +85,7 @@ $RECYCLE.BIN/
 *.lnk
 
 #private configs
-_*Config.json
+_*config.json
 
 #databases
 *.db
@@ -95,3 +95,6 @@ package-lock.json
 
 #generated mp3 audio
 tts/*.mp3
+
+#discord.js/opum files
+.vs

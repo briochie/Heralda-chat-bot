@@ -1,30 +1,36 @@
 {
   "name": "heralda-chat-bot",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A simple bot that heralds new arrivals to voice chat channels in Discord.",
   "main": "index.js",
   "scripts": {
-    "start": "forever start -l forever.log -e BOOSTOErrs.log -o BOOSTOOutput.log -a index.js",
+    "start": "forever start -l forever.log -e HeraldaErrorLog.log -o HeraldaOutputLog.log -a index.js",
     "stop": "forever stop index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EbekFrostblade/BOOST-o-bot.git"
+    "url": "git+https://github.com/EbekFrostblade/Heralda-chat-bot.git"
   },
   "keywords": [
     "bot",
-    "discord"
+    "discord",
+    "tts",
+    "text-to-speech"
   ],
   "author": "Brad \"breadjones\" Jones",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/EbekFrostblade/Heralda-chat-bot/issues"
   },
-  "homepage": "https://github.com/EbekFrostblade/BOOST-o-bot#readme",
+  "homepage": "https://github.com/EbekFrostblade/Heralda-chat-bot#readme",
   "dependencies": {
-    "discordie": "github:qeled/discordie",
+    "discord.js": "^11.4.2",
+    "ffmpeg-binaries": "^4.0.0",
     "forever": "^0.15.3",
-    "voice-rss-tts": "./lib/voice-rss-tts"
+    "globby": "^8.0.1",
+    "heralda-voice-plugin": "EbekFrostblade/Heralda-voice-plugin",
+    "node-opus": "^0.3",
+    "npm-keyword": "^5.0.0"
   }
 }
