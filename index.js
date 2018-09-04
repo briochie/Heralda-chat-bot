@@ -43,6 +43,7 @@ function loadInstalledPlugins() {
         }
 
         let PluginClass = require(pluginPath);
+        console.log('Starting ' + pluginData.name);
         plugins[pluginData.name] = new PluginClass(client, config.plugins[pluginData.name]);
     });
 }

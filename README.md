@@ -25,7 +25,7 @@ After getting these, create a file in the root directory called `_config.json`. 
 {
   "token": "[DISCORD TOKEN]",
   "plugins": {
-    "heralda-plugin-voice": {
+    "heralda-voice-plugin": {
       "voiceApiKey": "[VOICERSS TOKEN]"
     }
   }
