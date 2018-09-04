@@ -2,9 +2,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const connectionConfig = require('./_connectionConfig.json');
-const Responder = require("./components/responder.js");
+const Responder = require("./classes/responder.js");
 
-const HeraldPlugin = require('./components/herald.js');
+const HeraldPlugin = require('./classes/herald.js');
 
 process.on('exit', destroyOnExit);
 process.on('SIGINT', destroyOnExit);
