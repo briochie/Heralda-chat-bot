@@ -1,10 +1,9 @@
 const Discord = require('discord.js');
+const globby = require('globby');
+
 const client = new Discord.Client();
 
-const connectionConfig = require('./_connectionConfig.json');
-const Responder = require("./classes/responder.js");
-
-const HeraldPlugin = require('./classes/herald.js');
+const config = require('./_config.json');
 
 process.on('exit', destroyOnExit);
 process.on('SIGINT', destroyOnExit);
@@ -13,14 +12,14 @@ process.on('SIGUSR2', destroyOnExit);
 
 var plugins = [];
 
-client.login(connectionConfig.token).then(() => {
+client.login(config.token).then(() => {
     console.log("================ HERALDA ================")
     console.log("Started at: ", new Date());
     console.log("Connected as: ", client.user.tag);
     console.log("Connected at: ", new Date());
     console.log("============================");
 
-    plugins['herald'] = new HeraldPlugin(client);
+    loadInstalledPlugins();
 }).catch((err) => {
     console.error("Connection Failed: " + err);
     process.exitCode = 1;
@@ -29,4 +28,21 @@ client.login(connectionConfig.token).then(() => {
 function destroyOnExit() {
     console.log("Exiting program, destroying session.");
     client.destroy();
+}
+
+function loadInstalledPlugins() {
+    let plugins = globby.sync(
+        ['heralda-*'],
+        {cwd: './node_modules', onlyFiles: false, absolute: true, deep: 0}
+    );
+
+    plugins.forEach(pluginPath => {
+        let pluginData = require([pluginPath, 'package.json'].join('/'));
+        if (!pluginData.keywords.includes('heralda-plugin')) {
+            return;
+        }
+
+        let PluginClass = require(pluginPath);
+        plugins[pluginData.name] = new PluginClass(client, config.plugins[pluginData.name]);
+    });
 }

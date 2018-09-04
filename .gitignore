@@ -85,7 +85,7 @@ $RECYCLE.BIN/
 *.lnk
 
 #private configs
-_*Config.json
+_*config.json
 
 #databases
 *.db
