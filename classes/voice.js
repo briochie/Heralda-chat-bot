@@ -2,13 +2,14 @@ const fs = require('fs');
 const tts = require('../lib/voice-rss-tts/index.js');
 const connectionConfig = require('../_connectionConfig.json');
 
+const HeraldaPlugin = require('./plugin.js');
 const VoiceQueue = require('./voiceQueue.js');
 
 const ttsDirectory = "./tts";
 
-class Voice {
+class Voice extends HeraldaPlugin {
     constructor(client) {
-        this.client = client;
+        super(client);
         this.voiceQueue = new VoiceQueue();
     }
 

@@ -1,11 +1,10 @@
 const Discord = require('discord.js');
-const Responder = require("./responder.js");
+const HeraldaPlugin = require('./plugin.js');
 const Voice = require("./voice.js");
 
-class Herald {
+class Herald extends HeraldaPlugin {
   constructor(client) {
-    this.client = client;
-    this.responder = new Responder(client);
+    super(client);
     this.voice = new Voice(client);
 
     this._listenForSummons();
