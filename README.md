@@ -12,14 +12,20 @@ Heralda is a chat bot that announces the arrival of new users to voice channels 
 * Customizable "welcome" messages for Heralda when she joins a voice channel.
 * Easier customization for language/audio settings.
 
+## Bot Commands
+
+Heralda's commands are driven by her plugins. By default, she comes with [heralda-voice-plugin](https://github.com/EbekFrostblade/Heralda-voice-plugin) in the dependencies. Check out that repo for documentation on her commands and API.
+
 ## Installing Heralda
 
 To use Heralda, you will need:
 
+* NodeJS v8+ (I use v10.5.0)
+* npm (I use 6.4.1)
 * A token from Discord.
 * An api key from http://www.voicerss.org.
 
-After getting these, create a file in the root directory called `_config.json`. Add your keys to that file:
+Create a file in the root directory called `_config.json`. Add your keys to that file:
 
 ```json
 {
@@ -33,12 +39,14 @@ After getting these, create a file in the root directory called `_config.json`. 
 
 ```
 
-After that, run `npm install` and `npm start`, and Heralda will be up and running. Invite her to your Discord server as you would any other bot.
+After that, run `npm install` and `npm start`, and Heralda will be up and running. Invite her to your Discord server as you would any other bot. Heralda will need permissions to send messages, connect, and speak in order for her to perform her duties.
+
+To stop the process, run `npm stop`.
 
 ### Installing on Windows
 
-Since Discord.js prefers to use `node-opus`, you will need to install the windows build tools: https://github.com/felixrieseberg/windows-build-tools
+Since Discord.JS prefers to use `node-opus` (and therefore, so do we), you will need to install the [Windows build tools](https://github.com/felixrieseberg/windows-build-tools). These can be difficult to get configured properly, so be sure to read the documentation, and be sure you have the right Visual Studio version/packages installed.
 
 ### Adding Plugins
 
-By default, Heralda will install the voice plugin, so she can announce users as they enter the voice channel. You can install other plugins using npm, and Heralda will automatically activate these plugins on startup. All you need to do is use `npm install`.
+You can install other plugins using npm, and Heralda will automatically activate these plugins on startup. All you need to do is use `npm install`. When making your own plugin, make sure their name begins with `heralda-`.
