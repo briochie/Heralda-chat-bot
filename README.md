@@ -5,12 +5,8 @@ Heralda is a chat bot that announces the arrival of new users to voice channels 
 ## Features
 
 * Announces user arrivals and exits.
-
-## Features in the Future
-
 * Customizable user join and exit messages for each server.
 * Customizable "welcome" messages for Heralda when she joins a voice channel.
-* Easier customization for language/audio settings.
 
 ## Bot Commands
 
