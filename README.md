@@ -14,7 +14,7 @@ Heralda is a chat bot that announces the arrival of new users to voice channels 
 
 ## Bot Commands
 
-Heralda's commands are driven by her plugins. By default, she comes with [heralda-voice-plugin](https://github.com/EbekFrostblade/Heralda-voice-plugin) in the dependencies. Check out that repo for documentation on her commands and API.
+Heralda's commands are driven by her plugins. By default, she comes with [heralda-voice-plugin](https://github.com/EbekFrostblade/Heralda-voice-plugin) in the dependencies. Check out that repo for documentation on her commands and API, as well as additional custom configuration options.
 
 ## Installing Heralda
 
@@ -32,7 +32,9 @@ Create a file in the root directory called `_config.json`. Add your keys to that
   "token": "[DISCORD TOKEN]",
   "plugins": {
     "heralda-voice-plugin": {
-      "voiceApiKey": "[VOICERSS TOKEN]"
+      "voice": {
+        apiKey: "[VOICERSS TOKEN]"
+      }
     }
   }
 }

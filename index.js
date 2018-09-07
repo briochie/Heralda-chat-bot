@@ -22,6 +22,7 @@ client.login(config.token).then(() => {
     loadInstalledPlugins();
 }).catch((err) => {
     console.error("Connection Failed: " + err);
+    console.trace(err);
     process.exitCode = 1;
 });
 
