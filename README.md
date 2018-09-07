@@ -29,7 +29,7 @@ Create a file in the root directory called `_config.json`. Add your keys to that
   "plugins": {
     "heralda-voice-plugin": {
       "voice": {
-        apiKey: "[VOICERSS TOKEN]"
+        "apiKey": "[VOICERSS TOKEN]"
       }
     }
   }
