@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EbekFrostblade/Heralda-chat-bot.git"
+    "url": "git+https://github.com/breadjones/Heralda-chat-bot.git"
   },
   "keywords": [
     "bot",
@@ -21,15 +21,15 @@
   "author": "Brad \"breadjones\" Jones",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/EbekFrostblade/Heralda-chat-bot/issues"
+    "url": "https://github.com/breadjones/Heralda-chat-bot/issues"
   },
-  "homepage": "https://github.com/EbekFrostblade/Heralda-chat-bot#readme",
+  "homepage": "https://github.com/breadjones/Heralda-chat-bot#readme",
   "dependencies": {
     "discord.js": "^11.4.2",
     "ffmpeg-binaries": "^4.0.0",
     "forever": "^0.15.3",
     "globby": "^8.0.1",
-    "heralda-voice-plugin": "EbekFrostblade/Heralda-voice-plugin",
+    "heralda-voice-plugin": "breadjones/Heralda-voice-plugin",
     "node-opus": "^0.3",
     "npm-keyword": "^5.0.0"
   }
